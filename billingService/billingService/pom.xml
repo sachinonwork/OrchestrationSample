@@ -12,7 +12,7 @@
 	<artifactId>billingService</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>billingService</name>
-	<description>Sample Service in Orchetration</description>
+	<description>Sample Service in Orchestration</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -40,6 +40,19 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>6.1.10</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.34</version>
+			<scope>provided</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>
