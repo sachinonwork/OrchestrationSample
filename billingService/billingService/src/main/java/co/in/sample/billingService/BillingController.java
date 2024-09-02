@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Controller
 public class BillingController {
 
-    @PostMapping("/api/billing")
+    @PostMapping("/api/billing/")
     public ResponseEntity<String> billingRequested(@RequestBody BillingData billing) {
         if(billing != null && "errorProduct".equalsIgnoreCase(billing.getProductName())) {
             return ResponseEntity.internalServerError().body("Failed to bill");
