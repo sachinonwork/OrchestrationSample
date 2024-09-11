@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>co.in.sample</groupId>
-	<artifactId>dispatchService</artifactId>
+	<artifactId>orchestrationSampleApp</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>dispatchService</name>
-	<description>Package dispatch Service in Orchestration</description>
+	<name>Orchestration Sample App</name>
+	<description>Package showing integration of service in Orchestration</description>
 	<url/>
 	<licenses>
 		<license/>
