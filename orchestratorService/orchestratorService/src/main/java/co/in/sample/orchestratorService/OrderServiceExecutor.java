@@ -27,7 +27,7 @@ public class OrderServiceExecutor {
         if (ObjectUtils.isEmpty(orderResponse) ||
                 !orderResponse.getStatusCode().is2xxSuccessful()) {
             LOGGER.error("order service request failed with empty response.");
-            return ResponseEntity.internalServerError().body("Unable to create purchase order");
+            return ResponseEntity.badRequest().body("Unable to create purchase order");
         }
         LOGGER.error("order service request is successful.");
         return ResponseEntity.ok("Order response is received");
