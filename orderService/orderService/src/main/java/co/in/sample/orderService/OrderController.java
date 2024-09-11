@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,5 +29,20 @@ public class OrderController {
         }
         LOGGER.error("Order request processed successfully");
         return ResponseEntity.ok("Order Completed");
+    }
+
+    @PutMapping(path = "/order", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> orderReversalRequest(@RequestBody OrderDetails orderDetails) {
+        if (ObjectUtils.isEmpty(orderDetails) || ObjectUtils.isEmpty(orderDetails.getOrderId())) {
+            LOGGER.error("Found request blank for reversing order");
+            return ResponseEntity.badRequest().body("Failed to reverse order");
+        }
+        if (!ObjectUtils.isEmpty(orderDetails) && StringUtils.hasLength(orderDetails.getOrderDescription())
+                && StringUtils.pathEquals("errorReversalProduct", orderDetails.getOrderDescription())) {
+            LOGGER.error("Failed due to invalid product in request");
+            return ResponseEntity.badRequest().body("Failed to rever order");
+        }
+        LOGGER.error("Order reversal processed successfully");
+        return ResponseEntity.ok("Order Reversal Completed");
     }
 }

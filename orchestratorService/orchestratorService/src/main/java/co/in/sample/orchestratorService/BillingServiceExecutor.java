@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 
 @Service
@@ -17,19 +18,26 @@ public class BillingServiceExecutor {
     private String billingServiceUrl;
 
 
-    ResponseEntity<String> invokeBillingService(String billingRequest) {
+    public String invokeBillingService(String billingRequest) {
         RestClient orderServiceCaller = RestClient.builder()
                 .baseUrl(billingServiceUrl)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
         LOGGER.info("Calling billing service at:{}", billingServiceUrl);
-        ResponseEntity<String> billingResponse = orderServiceCaller.post().body(billingRequest).retrieve().toEntity(String.class);
+        ResponseEntity<String> billingResponse;
+        try {
+            billingResponse = orderServiceCaller.post().body(billingRequest).retrieve().toEntity(String.class);
+        } catch (
+                HttpClientErrorException ex) {
+            LOGGER.error("order service request failed with empty response.");
+            return "ErrorResponse";
+        }
         if (ObjectUtils.isEmpty(billingResponse) ||
                 !billingResponse.getStatusCode().is2xxSuccessful()) {
             LOGGER.error("billing service request failed with empty response.");
-            return ResponseEntity.badRequest().body("Unable to create billing for order");
+            return "ErrorResponse";
         }
         LOGGER.info("billing service request is successful.");
-        return ResponseEntity.ok("Billing response is received");
+        return "Billing response is received";
     }
 }

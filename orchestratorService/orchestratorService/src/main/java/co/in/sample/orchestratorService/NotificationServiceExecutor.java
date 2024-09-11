@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 
 @Service
@@ -17,19 +18,26 @@ public class NotificationServiceExecutor {
     private String notificationServiceUrl;
 
 
-    ResponseEntity<String> invokeNotificationService(String notificationRequest) {
+    public String invokeNotificationService(String notificationRequest) {
         RestClient notificationServiceCaller = RestClient.builder()
                 .baseUrl(notificationServiceUrl)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
         LOGGER.info("Calling Notification service at:{}", notificationServiceUrl);
-        ResponseEntity<String> notificationResponse = notificationServiceCaller.post().body(notificationRequest).retrieve().toEntity(String.class);
+        ResponseEntity<String> notificationResponse;
+        try {
+            notificationResponse = notificationServiceCaller.post().body(notificationRequest).retrieve().toEntity(String.class);
+        } catch (HttpClientErrorException ex) {
+            LOGGER.error("Notification service request failed with empty response.");
+            return "ErrorResponse";
+        }
+
         if (ObjectUtils.isEmpty(notificationResponse) ||
                 !notificationResponse.getStatusCode().is2xxSuccessful()) {
             LOGGER.error("Notification service request failed with empty response.");
-            return ResponseEntity.badRequest().body("Unable to send notification");
+            return "ErrorResponse";
         }
         LOGGER.info("Notification service request is successful.");
-        return ResponseEntity.ok("Notification response is received");
+        return "Notification response is received";
     }
 }

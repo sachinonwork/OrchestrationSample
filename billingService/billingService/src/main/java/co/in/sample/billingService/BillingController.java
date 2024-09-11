@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/api")
+@RestController
 public class BillingController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BillingController.class);
@@ -23,9 +23,9 @@ public class BillingController {
             LOGGER.error("Found request or order Id blank in request");
             return ResponseEntity.badRequest().body("Failed to Order for error product");
         }
-        if (billing != null && billing.getProductName() != null && StringUtils.pathEquals("errorProduct", billing.getProductName())) {
+        if (StringUtils.pathEquals("errorProduct", billing.getProductName())) {
             LOGGER.error("Found request of order for invalid product");
-            return ResponseEntity.badRequest().body("Failed to bill");
+            return ResponseEntity.badRequest().body("Failed to bill due to invalid product");
         }
         LOGGER.info("Billing id request and done for order");
         return ResponseEntity.ok("Billing Completed");

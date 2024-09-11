@@ -17,7 +17,7 @@ public class DispatchServiceExecutor {
     private String dispatchServiceUrl;
 
 
-    ResponseEntity<String> invokeDispatchService(String dispatchRequest) {
+    public String invokeDispatchService(String dispatchRequest) {
         RestClient dispatchServiceCaller = RestClient.builder()
                 .baseUrl(dispatchServiceUrl)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -27,9 +27,9 @@ public class DispatchServiceExecutor {
         if (ObjectUtils.isEmpty(dispatchResponse) ||
                 !dispatchResponse.getStatusCode().is2xxSuccessful()) {
             LOGGER.error("dispatch service request failed with empty response.");
-            return ResponseEntity.badRequest().body("Unable to dispatch order");
+            return "ErrorResponse";
         }
         LOGGER.info("dispatch service request is successful.");
-        return ResponseEntity.ok("dispatch response is received");
+        return "dispatch response is received";
     }
 }
