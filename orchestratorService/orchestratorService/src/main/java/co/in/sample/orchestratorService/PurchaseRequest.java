@@ -11,4 +11,5 @@ public class PurchaseRequest {
     private String productName;
     private String customerName;
     private String deliveryAddress;
+    private String notifyEmail;
 }
