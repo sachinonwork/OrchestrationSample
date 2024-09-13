@@ -23,7 +23,7 @@ public class BillingController {
             LOGGER.error("Found request or order Id blank in request");
             return ResponseEntity.badRequest().body("Failed to Order for error product");
         }
-        if (StringUtils.pathEquals("errorProduct", billing.getProductName())) {
+        if (StringUtils.pathEquals("errorBillingProduct", billing.getProductName())) {
             LOGGER.error("Found request of order for invalid product");
             return ResponseEntity.badRequest().body("Failed to bill due to invalid product");
         }
